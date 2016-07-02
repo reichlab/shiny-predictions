@@ -5,7 +5,7 @@ library(magrittr)
 library(RCurl)
 library(foreign)
 library(devtools)
-library(XML)
+
 # url <- "https://raw.githubusercontent.com/reichlab/ssr-influenza-competition/master/inst/submissions/EW18-KoT-2016-05-13.csv"
 # 
 # fludata <- getURL(url)
