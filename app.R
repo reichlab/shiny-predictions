@@ -22,6 +22,7 @@ fludata2$Week_1 = fludata2$Week_1 %>% as.numeric()
 fludata2$Week_2 = fludata2$Week_2 %>% as.numeric()
 fludata2$Week_3 = fludata2$Week_3 %>% as.numeric()
 fludata2$Week_4 = fludata2$Week_4 %>% as.numeric()
+fludata2$Peak = fludata2$Peak %>% as.numeric()
 
 fludata3$Week = fludata3$Week %>% as.numeric()
 fludata3$Season_onset = fludata3$Season_onset %>% as.numeric()
@@ -49,17 +50,12 @@ server <- function(input, output, session) {
       Probability >= input$probInput[1],
       Probability <= input$probInput[2]
     )
-    ggplot(filtered, aes(x=as.numeric(Probability), y=Week_1)) + geom_point()
-    # y=input$weekaheadInput still not fully working, so I have simplified it to one week ahead for the moment
+    ggplot(filtered, aes(x=Probability)) + geom_point(aes_string(y=input$weekaheadInput))
   })
   output$fluplot2 <- renderPlot({
-    ggplot(fludata3, aes(x=as.numeric(Week), y=as.numeric(Season_onset))) + geom_line()
-    # same issue as above, y=input$typeInput still not working due to NAs being introduced by coercion
+    ggplot(fludata3, aes(x=Week)) + geom_line(aes_string(y=input$typeInput))
   })
   
 }
 
 shinyApp(ui = ui, server = server)
-
-
-
