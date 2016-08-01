@@ -1,0 +1,35 @@
+library(plyr)
+library(data.table)
+library(magrittr)
+library(RCurl)
+library(cdcfluview)
+library(ggplot2)
+
+EW201549_part1 <- fread("https://raw.githubusercontent.com/reichlab/ssr-influenza-competition/master/inst/submissions/EW49-KoT-2015-12-21.csv", nrows=35, skip=9, select = c(1:4)) %>% as.data.frame()
+EW201549_part2 <- fread("https://raw.githubusercontent.com/reichlab/ssr-influenza-competition/master/inst/submissions/EW49-KoT-2015-12-21.csv", nrows=29, skip=46, select=c(1:7)) %>% as.data.frame()
+EW201549_part1$V2 <- NULL
+EW201549_part2$V2 <- NULL
+EW201549_part1 <- plyr::rename(EW201549_part1, c("V1"="Week"))
+EW201549_part1 <- plyr::rename(EW201549_part1, c("V3"="Season_Onset"))
+EW201549_part1 <- plyr::rename(EW201549_part1, c("V4"="Peak_Week"))
+EW201549_part2 <- plyr::rename(EW201549_part2, c("V1"="ILI_Bin"))
+EW201549_part2 <- plyr::rename(EW201549_part2, c("V3"="1_Week_Ahead"))
+EW201549_part2 <- plyr::rename(EW201549_part2, c("V4"="2_Week_Ahead"))
+EW201549_part2 <- plyr::rename(EW201549_part2, c("V5"="3_Week_Ahead"))
+EW201549_part2 <- plyr::rename(EW201549_part2, c("V6"="4_Week_Ahead"))
+EW201549_part2 <- plyr::rename(EW201549_part2, c("V7"="Peak_Height"))
+
+yeartest <- get_flu_data("national", data_source="ilinet", years=2015:2016)
+test_points <- as.matrix(EW201549_part2)
+
+testing <- yeartest[1:10,]
+vars <- c("WEEK", "X..WEIGHTED.ILI")
+testing <- testing[vars]
+
+testing <- rbind(testing, c(50, test_points[28, "1_Week_Ahead"]))
+testing <- rbind(testing, c(51, test_points[28, "2_Week_Ahead"]))
+testing <- rbind(testing, c(52, test_points[28, "3_Week_Ahead"]))
+testing <- rbind(testing, c(53, test_points[28, "4_Week_Ahead"]))
+
+testplot <- ggplot(data=testing[1:10,], aes(x=WEEK, y=X..WEIGHTED.ILI)) + geom_point() + geom_point(data=testing[11:14,], color="red")
+testplot + ggtitle("Week 49 Predictions") + xlab("Week") + ylab("Weighted ILI")
