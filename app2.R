@@ -40,15 +40,13 @@ server <-  function(input, output, session) {
     new_string <- c(eweek_sub$`1_Week_Ahead`, eweek_sub$`2_Week_Ahead`, eweek_sub$`3_Week_Ahead`, eweek_sub$`4_Week_Ahead`)
     new_string2 <- c(as.numeric(input$week) +1, as.numeric(input$week) +2, as.numeric(input$week) +3, as.numeric(input$week) +4)
     
-    eweek_revised1 <- data.frame(yeartest$WEEK, yeartest$X..WEIGHTED.ILI)
-    eweek_revised1 <- plyr::rename(eweek_revised1, c("yeartest.WEEK"="WEEK", "yeartest.X..WEIGHTED.ILI"="X..WEIGHTED.ILI"))
+    eweek_revised1 <- data.frame(yeartest$WEEK, yeartest$X..WEIGHTED.ILI, yeartest$YEAR)
+    eweek_revised1 <- plyr::rename(eweek_revised1, c("yeartest.WEEK"="WEEK", "yeartest.X..WEIGHTED.ILI"="X..WEIGHTED.ILI", "yeartest.YEAR"="YEAR"))
     
     eweek_revised2 <- data.frame(new_string2, new_string)
     eweek_revised2 <- plyr::rename(eweek_revised2, c("new_string2"="WEEK", "new_string"="X..WEIGHTED.ILI"))
     
-    ggplot() +geom_line(data=eweek_revised1, aes(x=WEEK, y=X..WEIGHTED.ILI)) +geom_line(data=eweek_revised2, aes(x=WEEK, y=X..WEIGHTED.ILI), color="red")
+    ggplot() +geom_line(data=eweek_revised1, aes(x=WEEK, y=X..WEIGHTED.ILI, color=YEAR)) +geom_line(data=eweek_revised2, aes(x=WEEK, y=X..WEIGHTED.ILI), color="red")
     
   })
 }
-
-shinyApp(ui = ui, server = server)
