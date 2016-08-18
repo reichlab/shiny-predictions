@@ -7,7 +7,7 @@ library(foreign)
 library(devtools)
 library(XML)
 library(cdcfluview)
-library(data)
+library(data.table)
 
 yeartest <- get_flu_data("national", data_source="ilinet", years=2015:2016)
 
