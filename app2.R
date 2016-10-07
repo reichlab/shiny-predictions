@@ -47,7 +47,7 @@ server <-  function(input, output, session) {
     weeknumbers <- c(as.numeric(week) +1, as.numeric(week) +2, as.numeric(week) +3, as.numeric(week) +4)
     
     peakheight <- c(eweek_sub$`Peak_Height`)
-    peakweek <- c(eweek_sub2$`Peak_Week`)
+    peakweek <- c(round(eweek_sub2$`Peak_Week`))
     
     eweek_revised3 <- data.frame(peakweek, peakheight)
     eweek_revised3 <- plyr::rename(eweek_revised3, c("peakweek"="WEEK", "peakheight"="X..WEIGHTED.ILI"))
