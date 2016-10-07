@@ -14,9 +14,8 @@ yeartest <- get_flu_data("national", data_source="ilinet", years=2015:2016)
 ui <- fluidPage(titlePanel("Flu Prediction Data v2"),
                 sidebarLayout(
                   sidebarPanel(
-                    textInput(inputId="URL", "Data URL", "https://raw.githubusercontent.com/reichlab/ssr-influenza-competition/master/inst/submissions/EW15-KoT-2016-04-22.csv" )
-                    #textInput(inputId="years1", "Year 1", "2015"),
-                    #(inputId="years2", "Year 2", "2016")
+                    textInput(inputId="URL", "Data URL", "https://raw.githubusercontent.com/reichlab/ssr-influenza-competition/master/inst/submissions/EW15-KoT-2016-04-22.csv" ),
+                    p("Please input a valid 2015-2016 flu week data sheet above.")
                     #sliderInput(inputId="years", "Year Span", min=2000, max=2016, value=c(2015:2016), step=1)
                   ),
                   mainPanel(plotOutput("fluplot"))
